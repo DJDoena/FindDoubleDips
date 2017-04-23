@@ -388,6 +388,7 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
 
                 if (TaskbarManager.IsPlatformSupported)
                 {
+                    TaskbarManager.Instance.OwnerHandle = Handle;
                     TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Normal);
                     TaskbarManager.Instance.SetProgressValue(0, ProgressWindow.ProgressBar.Maximum);
                 }
