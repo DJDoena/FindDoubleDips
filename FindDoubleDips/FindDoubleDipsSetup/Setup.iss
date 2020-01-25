@@ -1,11 +1,11 @@
 [Setup]
 AppName=Find Double Dips
 AppId=FindDoubleDips
-AppVerName=Find Double Dips 3.0.2.1
-AppCopyright=Copyright © Doena Soft. 2012 - 2017
+AppVerName=Find Double Dips 3.0.2.2
+AppCopyright=Copyright © Doena Soft. 2012 - 2020
 AppPublisher=Doena Soft.
 AppPublisherURL=http://doena-journal.net/en/dvd-profiler-tools/
-DefaultDirName={pf32}\Doena Soft.\Find Double Dips
+DefaultDirName={commonpf32}\Doena Soft.\Find Double Dips
 ; DefaultGroupName=Doena Soft.
 DirExistsWarning=No
 SourceDir=..\FindDoubleDips\bin\x86\FindDoubleDips
@@ -13,16 +13,16 @@ Compression=zip/9
 AppMutex=InvelosDVDPro
 OutputBaseFilename=FindDoubleDipsSetup
 OutputDir=..\..\..\..\FindDoubleDipsSetup\Setup\FindDoubleDips
-MinVersion=0,5.1
+MinVersion=0,6.0
 PrivilegesRequired=admin
 WizardImageFile=compiler:wizmodernimage-is.bmp
 WizardSmallImageFile=compiler:wizmodernsmallimage-is.bmp
 DisableReadyPage=yes
 ShowLanguageDialog=no
 VersionInfoCompany=Doena Soft.
-VersionInfoCopyright=2012 - 2017
+VersionInfoCopyright=2012 - 2020
 VersionInfoDescription=Find Double Dips Setup
-VersionInfoVersion=3.0.2.1
+VersionInfoVersion=3.0.2.2
 UninstallDisplayIcon={app}\djdsoft.ico
 
 [Languages]
