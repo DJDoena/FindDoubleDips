@@ -1,4 +1,4 @@
-﻿using DoenaSoft.DVDProfiler.DVDProfilerXML.Version390;
+﻿using DoenaSoft.DVDProfiler.DVDProfilerXML.Version400;
 using System;
 
 namespace DoenaSoft.DVDProfiler.FindDoubleDips

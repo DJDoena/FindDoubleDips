@@ -1,7 +1,7 @@
 [Setup]
 AppName=Find Double Dips
 AppId=FindDoubleDips
-AppVerName=Find Double Dips 3.0.2.2
+AppVerName=Find Double Dips 3.0.2.3
 AppCopyright=Copyright © Doena Soft. 2012 - 2020
 AppPublisher=Doena Soft.
 AppPublisherURL=http://doena-journal.net/en/dvd-profiler-tools/
@@ -22,7 +22,7 @@ ShowLanguageDialog=no
 VersionInfoCompany=Doena Soft.
 VersionInfoCopyright=2012 - 2020
 VersionInfoDescription=Find Double Dips Setup
-VersionInfoVersion=3.0.2.2
+VersionInfoVersion=3.0.2.3
 UninstallDisplayIcon={app}\djdsoft.ico
 
 [Languages]

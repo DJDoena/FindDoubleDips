@@ -12,7 +12,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.Xsl;
 using DoenaSoft.DVDProfiler.DVDProfilerHelper;
-using DoenaSoft.DVDProfiler.DVDProfilerXML.Version390;
+using DoenaSoft.DVDProfiler.DVDProfilerXML.Version400;
 using Invelos.DVDProfilerPlugin;
 using Microsoft.WindowsAPICodePack.Taskbar;
 
@@ -420,7 +420,7 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
 
                     String xml = (String)(Invoke(getProfileData));
 
-                    DVD dvd = Serializer<DVD>.FromString(xml, DVD.DefaultEncoding);
+                    DVD dvd = DVDProfilerSerializer<DVD>.FromString(xml, DVD.DefaultEncoding);
 
                     dvdList.Add(dvd);
 
