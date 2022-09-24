@@ -2,7 +2,7 @@
 AppName=Find Double Dips
 AppId=FindDoubleDips
 AppVerName=Find Double Dips 3.0.2.4
-AppCopyright=Copyright © Doena Soft. 2012 - 2021
+AppCopyright=Copyright © Doena Soft. 2012 - 2022
 AppPublisher=Doena Soft.
 AppPublisherURL=http://doena-journal.net/en/dvd-profiler-tools/
 DefaultDirName={commonpf32}\Doena Soft.\Find Double Dips
@@ -13,14 +13,13 @@ Compression=zip/9
 AppMutex=InvelosDVDPro
 OutputBaseFilename=FindDoubleDipsSetup
 OutputDir=..\..\..\..\FindDoubleDipsSetup\Setup\FindDoubleDips
-MinVersion=0,6.0
+MinVersion=0,6.1sp1
 PrivilegesRequired=admin
-WizardImageFile=compiler:wizmodernimage-is.bmp
-WizardSmallImageFile=compiler:wizmodernsmallimage-is.bmp
+WizardStyle=modern
 DisableReadyPage=yes
 ShowLanguageDialog=no
 VersionInfoCompany=Doena Soft.
-VersionInfoCopyright=2012 - 2021
+VersionInfoCopyright=2012 - 2022
 VersionInfoDescription=Find Double Dips Setup
 VersionInfoVersion=3.0.2.4
 UninstallDisplayIcon={app}\djdsoft.ico
@@ -36,28 +35,26 @@ Name: "full"; Description: "Full installation"
 
 [Files]
 Source: "djdsoft.ico"; DestDir: "{app}"; Flags: ignoreversion
-Source: "DVDProfilerHelper.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "DVDProfilerHelper.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "DVDProfilerXML.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "DVDProfilerXML.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "FindDoubleDips.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "FindDoubleDips.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Microsoft.WindowsAPICodePack.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Microsoft.WindowsAPICodePack.Shell.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "DoenaSoft.DVDProfilerHelper.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "DoenaSoft.DVDProfilerXML.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "DoenaSoft.FindDoubleDips.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "DoenaSoft.FindDoubleDips.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "DoenaSoft.WindowsAPICodePack.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "DoenaSoft.WindowsAPICodePack.Shell.dll"; DestDir: "{app}"; Flags: ignoreversion
 
-Source: "de\DVDProfilerHelper.resources.dll"; DestDir: "{app}\de"; Flags: ignoreversion
-Source: "de\FindDoubleDips.resources.dll"; DestDir: "{app}\de"; Flags: ignoreversion
+Source: "de\DoenaSoft.DVDProfilerHelper.resources.dll"; DestDir: "{app}\de"; Flags: ignoreversion
+Source: "de\DoenaSoft.FindDoubleDips.resources.dll"; DestDir: "{app}\de"; Flags: ignoreversion
 
 Source: "Readme\readme.html"; DestDir: "{app}\Readme"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Run]
-Filename: "{win}\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe"; Parameters: "/codebase ""{app}\FindDoubleDips.dll"""; Flags: runhidden
+Filename: "{win}\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe"; Parameters: "/codebase ""{app}\DoenaSoft.FindDoubleDips.dll"""; Flags: runhidden
 
 ;[UninstallDelete]
 
 [UninstallRun]
-Filename: "{win}\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe"; Parameters: "/u ""{app}\FindDoubleDips.dll"""; Flags: runhidden
+Filename: "{win}\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe"; Parameters: "/u ""{app}\DoenaSoft.FindDoubleDips.dll"""; Flags: runhidden
 
 [Registry]
 ; Register - Cleanup ahead of time in case the user didn't uninstall the previous version.
