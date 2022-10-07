@@ -71,13 +71,13 @@ Root: HKLM; Subkey: "Software\Classes\CLSID\{{FFB526B1-A53E-49FB-BB7D-AF6025DC09
 Root: HKLM; Subkey: "Software\Classes\DoenaSoft.DVDProfiler.FindDoubleDips.Plugin"; Flags: dontcreatekey uninsdeletekey
 
 [Code]
-function IsDotNET35Detected(): boolean;
-// Function to detect dotNet framework version 3.5
+function IsDotNET4Detected(): boolean;
+// Function to detect dotNet framework version 4
 // Returns true if it is available, false it's not.
 var
 dotNetStatus: boolean;
 begin
-dotNetStatus := RegKeyExists(HKLM, 'SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5');
+dotNetStatus := RegKeyExists(HKLM, 'SOFTWARE\Microsoft\NET Framework Setup\NDP\v4');
 Result := dotNetStatus;
 end;
 
@@ -85,12 +85,11 @@ function InitializeSetup(): Boolean;
 // Called at the beginning of the setup package.
 begin
 
-if not IsDotNET35Detected then
+if not IsDotNET4Detected then
 begin
-MsgBox( 'The Microsoft .NET Framework version 3.5 is not installed. Please install it and try again.', mbInformation, MB_OK );
+MsgBox( 'The Microsoft .NET Framework version 4 is not installed. Please install it and try again.', mbInformation, MB_OK );
 Result := false;
 end
 else
 Result := true;
 end;
-
