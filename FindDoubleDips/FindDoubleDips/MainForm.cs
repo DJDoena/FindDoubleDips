@@ -13,6 +13,7 @@ using System.Xml.Serialization;
 using System.Xml.Xsl;
 using DoenaSoft.DVDProfiler.DVDProfilerHelper;
 using DoenaSoft.DVDProfiler.DVDProfilerXML.Version400;
+using DoenaSoft.ToolBox.Generics;
 using Invelos.DVDProfilerPlugin;
 using Microsoft.WindowsAPICodePack.Taskbar;
 
@@ -24,7 +25,7 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
 
         #region Fields
 
-        private IDVDProfilerAPI Api;
+        private readonly IDVDProfilerAPI Api;
 
         private ProgressWindow ProgressWindow;
 
@@ -56,7 +57,7 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
 
             CanClose = true;
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion
@@ -66,7 +67,7 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
         private void OnCheckForUpdateToolStripMenuItemClick(Object sender
             , EventArgs e)
         {
-            CheckForNewVersion();
+            this.CheckForNewVersion();
         }
 
         private void OnEnglishToolStripMenuItemClick(Object sender
@@ -88,13 +89,13 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
         private void OnReadMeToolStripMenuItemClick(Object sender
             , EventArgs e)
         {
-            OpenReadme();
+            this.OpenReadme();
         }
 
         private void OnAboutToolStripMenuItemClick(Object sender
             , EventArgs e)
         {
-            using (AboutBox aboutBox = new AboutBox(GetType().Assembly))
+            using (AboutBox aboutBox = new AboutBox(this.GetType().Assembly))
             {
                 aboutBox.ShowDialog();
             }
@@ -103,19 +104,19 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
         private void OnMainFormLoad(Object sender
             , EventArgs e)
         {
-            SuspendLayout();
+            this.SuspendLayout();
 
-            LayoutForm();
+            this.LayoutForm();
 
             AddColumns(PurchasesDataGridView);
 
-            ResumeLayout();
+            this.ResumeLayout();
 
-            String currentVersion = GetType().Assembly.GetName().Version.ToString();
+            String currentVersion = this.GetType().Assembly.GetName().Version.ToString();
 
             if (Plugin.Settings.CurrentVersion != currentVersion)
             {
-                OpenReadme();
+                this.OpenReadme();
 
                 Plugin.Settings.CurrentVersion = currentVersion;
             }
@@ -131,12 +132,12 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
                 return;
             }
 
-            Plugin.Settings.MainForm.Left = Left;
-            Plugin.Settings.MainForm.Top = Top;
-            Plugin.Settings.MainForm.Width = Width;
-            Plugin.Settings.MainForm.Height = Height;
-            Plugin.Settings.MainForm.WindowState = WindowState;
-            Plugin.Settings.MainForm.RestoreBounds = RestoreBounds;
+            Plugin.Settings.MainForm.Left = this.Left;
+            Plugin.Settings.MainForm.Top = this.Top;
+            Plugin.Settings.MainForm.Width = this.Width;
+            Plugin.Settings.MainForm.Height = this.Height;
+            Plugin.Settings.MainForm.WindowState = this.WindowState;
+            Plugin.Settings.MainForm.RestoreBounds = this.RestoreBounds;
 
             Plugin.Settings.DefaultValues.CheckOnlyTitles = CheckTitlesRadioButton.Checked;
             Plugin.Settings.DefaultValues.IgnoreProductionYear = IgnoreProductionYearCheckBox.Checked;
@@ -198,9 +199,9 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
         private void OnSaveDoubleDipsFileToolStripMenuItemClick(Object sender
             , EventArgs e)
         {
-            List<DataGridViewRow> rows = GetRowsForSave(false).ToList();
+            List<DataGridViewRow> rows = this.GetRowsForSave(false).ToList();
 
-            SaveToXml(rows);
+            this.SaveToXml(rows);
         }
 
         private void SaveToXml(List<DataGridViewRow> rows)
@@ -221,7 +222,7 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
 
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    Collection collection = GetCollectionForExport(rows);
+                    Collection collection = this.GetCollectionForExport(rows);
 
                     try
                     {
@@ -291,9 +292,9 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
         private void OnSaveSelectedDoubleDipsFileToolStripMenuItemClick(Object sender
                 , EventArgs e)
         {
-            List<DataGridViewRow> rows = GetRowsForSave(true).ToList();
+            List<DataGridViewRow> rows = this.GetRowsForSave(true).ToList();
 
-            SaveToXml(rows);
+            this.SaveToXml(rows);
         }
 
         private static void SaveToXml(String fileName
@@ -347,7 +348,7 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
 
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    ReadCollectionFile(ofd.FileName, false);
+                    this.ReadCollectionFile(ofd.FileName, false);
                 }
             }
         }
@@ -366,11 +367,11 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
         {
             CanClose = false;
 
-            UseWaitCursor = true;
+            this.UseWaitCursor = true;
 
-            Cursor = Cursors.WaitCursor;
+            this.Cursor = Cursors.WaitCursor;
 
-            Enabled = false;
+            this.Enabled = false;
 
             PurchasesDataGridView.Rows.Clear();
 
@@ -388,19 +389,19 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
 
                 if (TaskbarManager.IsPlatformSupported)
                 {
-                    TaskbarManager.Instance.OwnerHandle = Handle;
+                    TaskbarManager.Instance.OwnerHandle = this.Handle;
                     TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Normal);
                     TaskbarManager.Instance.SetProgressValue(0, ProgressWindow.ProgressBar.Maximum);
                 }
 
-                Thread thread = new Thread(new ParameterizedThreadStart(ThreadRun));
+                Thread thread = new Thread(new ParameterizedThreadStart(this.ThreadRun));
 
                 thread.IsBackground = false;
                 thread.Start(new[] { allIds });
             }
             else
             {
-                ThreadFinished(Collection);
+                this.ThreadFinished(Collection);
             }
         }
 
@@ -416,17 +417,17 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
 
                 for (Int32 i = 0; i < allIds.Length; i++)
                 {
-                    Func<String> getProfileData = () => GetProfileData(allIds[i]);
+                    Func<String> getProfileData = () => this.GetProfileData(allIds[i]);
 
-                    String xml = (String)(Invoke(getProfileData));
+                    String xml = (String)(this.Invoke(getProfileData));
 
-                    DVD dvd = DVDProfilerSerializer<DVD>.FromString(xml, DVD.DefaultEncoding);
+                    DVD dvd = XmlSerializer<DVD>.FromString(xml, DVD.DefaultEncoding);
 
                     dvdList.Add(dvd);
 
-                    Action updateProgressBar = () => UpdateProgressBar();
+                    Action updateProgressBar = () => this.UpdateProgressBar();
 
-                    Invoke(updateProgressBar);
+                    this.Invoke(updateProgressBar);
                 }
 
                 collection = new Collection();
@@ -439,26 +440,26 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
             }
             finally
             {
-                Action threadFinished = () => ThreadFinished(collection);
+                Action threadFinished = () => this.ThreadFinished(collection);
 
-                Invoke(threadFinished);
+                this.Invoke(threadFinished);
             }
         }
 
         private void OnSaveDoupleDipsAsHTMLToolStripMenuItemClick(Object sender
             , EventArgs e)
         {
-            List<DataGridViewRow> rows = GetRowsForSave(false).ToList();
+            List<DataGridViewRow> rows = this.GetRowsForSave(false).ToList();
 
-            SaveToHtml(rows);
+            this.SaveToHtml(rows);
         }
 
         private void OnSaveDoubleDipsOfSelectedRowsAsHTMLToolStripMenuItemClick(Object sender
             , EventArgs e)
         {
-            List<DataGridViewRow> rows = GetRowsForSave(true).ToList();
+            List<DataGridViewRow> rows = this.GetRowsForSave(true).ToList();
 
-            SaveToHtml(rows);
+            this.SaveToHtml(rows);
         }
 
         private void SaveToHtml(List<DataGridViewRow> rows)
@@ -479,11 +480,11 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
 
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    Collection collection = GetCollectionForExport(rows);
+                    Collection collection = this.GetCollectionForExport(rows);
 
                     try
                     {
-                        SaveToHtml(sfd.FileName, collection);
+                        this.SaveToHtml(sfd.FileName, collection);
 
                         MessageBox.Show(MessageBoxTexts.Done, MessageBoxTexts.InformationHeader, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
@@ -570,14 +571,14 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
 
             if (collection != null)
             {
-                ReadCollection(collection, true);
+                this.ReadCollection(collection, true);
             }
 
-            Enabled = true;
+            this.Enabled = true;
 
-            Cursor = Cursors.Default;
+            this.Cursor = Cursors.Default;
 
-            UseWaitCursor = false;
+            this.UseWaitCursor = false;
 
             CanClose = true;
         }
@@ -738,63 +739,63 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
         private void CheckForNewVersion()
         {
             OnlineAccess.Init("Doena Soft.", "FindDoubleDips");
-            OnlineAccess.CheckForNewVersion("http://doena-soft.de/dvdprofiler/3.9.0/versions.xml", this, "FindDoubleDips", GetType().Assembly);
+            OnlineAccess.CheckForNewVersion("http://doena-soft.de/dvdprofiler/3.9.0/versions.xml", this, "FindDoubleDips", this.GetType().Assembly);
         }
 
         private void LayoutForm()
         {
             if (Plugin.Settings.MainForm.WindowState == FormWindowState.Normal)
             {
-                Left = Plugin.Settings.MainForm.Left;
+                this.Left = Plugin.Settings.MainForm.Left;
 
-                Top = Plugin.Settings.MainForm.Top;
+                this.Top = Plugin.Settings.MainForm.Top;
 
-                if (Plugin.Settings.MainForm.Width > MinimumSize.Width)
+                if (Plugin.Settings.MainForm.Width > this.MinimumSize.Width)
                 {
-                    Width = Plugin.Settings.MainForm.Width;
+                    this.Width = Plugin.Settings.MainForm.Width;
                 }
                 else
                 {
-                    Width = MinimumSize.Width;
+                    this.Width = this.MinimumSize.Width;
                 }
 
-                if (Plugin.Settings.MainForm.Height > MinimumSize.Height)
+                if (Plugin.Settings.MainForm.Height > this.MinimumSize.Height)
                 {
-                    Height = Plugin.Settings.MainForm.Height;
+                    this.Height = Plugin.Settings.MainForm.Height;
                 }
                 else
                 {
-                    Height = MinimumSize.Height;
+                    this.Height = this.MinimumSize.Height;
                 }
             }
             else
             {
-                Left = Plugin.Settings.MainForm.RestoreBounds.X;
+                this.Left = Plugin.Settings.MainForm.RestoreBounds.X;
 
-                Top = Plugin.Settings.MainForm.RestoreBounds.Y;
+                this.Top = Plugin.Settings.MainForm.RestoreBounds.Y;
 
-                if (Plugin.Settings.MainForm.RestoreBounds.Width > MinimumSize.Width)
+                if (Plugin.Settings.MainForm.RestoreBounds.Width > this.MinimumSize.Width)
                 {
-                    Width = Plugin.Settings.MainForm.RestoreBounds.Width;
+                    this.Width = Plugin.Settings.MainForm.RestoreBounds.Width;
                 }
                 else
                 {
-                    Width = MinimumSize.Width;
+                    this.Width = this.MinimumSize.Width;
                 }
 
-                if (Plugin.Settings.MainForm.RestoreBounds.Height > MinimumSize.Height)
+                if (Plugin.Settings.MainForm.RestoreBounds.Height > this.MinimumSize.Height)
                 {
-                    Height = Plugin.Settings.MainForm.RestoreBounds.Height;
+                    this.Height = Plugin.Settings.MainForm.RestoreBounds.Height;
                 }
                 else
                 {
-                    Height = MinimumSize.Height;
+                    this.Height = this.MinimumSize.Height;
                 }
             }
 
             if (Plugin.Settings.MainForm.WindowState != FormWindowState.Minimized)
             {
-                WindowState = Plugin.Settings.MainForm.WindowState;
+                this.WindowState = Plugin.Settings.MainForm.WindowState;
             }
 
             CheckTitlesRadioButton.Checked = Plugin.Settings.DefaultValues.CheckOnlyTitles;
@@ -812,7 +813,7 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
 
         private void OpenReadme()
         {
-            String helpFile = (new FileInfo(GetType().Assembly.Location)).DirectoryName + @"\Readme\readme.html";
+            String helpFile = (new FileInfo(this.GetType().Assembly.Location)).DirectoryName + @"\Readme\readme.html";
 
             if (File.Exists(helpFile))
             {
@@ -827,9 +828,9 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
         private void ReadCollectionFile(String fileName
             , Boolean filter)
         {
-            UseWaitCursor = true;
+            this.UseWaitCursor = true;
 
-            Cursor = Cursors.WaitCursor;
+            this.Cursor = Cursors.WaitCursor;
 
             try
             {
@@ -850,13 +851,13 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
                     return;
                 }
 
-                ReadCollection(collection, filter);
+                this.ReadCollection(collection, filter);
             }
             finally
             {
-                Cursor = Cursors.Default;
+                this.Cursor = Cursors.Default;
 
-                UseWaitCursor = false;
+                this.UseWaitCursor = false;
             }
         }
 
@@ -1043,7 +1044,7 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
 
                     foreach (DVD dvd in list)
                     {
-                        DataGridViewRow row = CreateRow();
+                        DataGridViewRow row = this.CreateRow();
 
                         if (odd)
                         {
@@ -1057,15 +1058,15 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
                         row.Cells[3].Value = GetProductionYear(dvd);
                         row.Cells[4].Value = GetMediaTypes(dvd);
                         row.Cells[5].Value = GetPurchaseDateString(dvd);
-                        row.Cells[6].Value = GetCollectionType(dvd);
-                        row.Cells[7].Value = GetBoxSetInfo(dvd);
+                        row.Cells[6].Value = this.GetCollectionType(dvd);
+                        row.Cells[7].Value = this.GetBoxSetInfo(dvd);
                         row.Cells[8].Value = dvd.OriginalTitle;
                         row.Cells[9].Value = dvd.SortTitle;
                         row.Cells[10].Value = dvd.UPC;
                         row.Cells[11].Value = dvd.ID_LocalityDesc;
-                        row.Cells[12].Value = GetRegion(dvd);
-                        row.Cells[13].Value = GetAudio(dvd);
-                        row.Cells[14].Value = GetSubtitles(dvd);
+                        row.Cells[12].Value = this.GetRegion(dvd);
+                        row.Cells[13].Value = this.GetAudio(dvd);
+                        row.Cells[14].Value = this.GetSubtitles(dvd);
 
                         row.Tag = dvd;
 

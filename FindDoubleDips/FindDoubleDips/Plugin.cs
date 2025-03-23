@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using System.Xml.Serialization;
-using Invelos.DVDProfilerPlugin;
-using System.IO;
-using System.Windows.Forms;
-using DoenaSoft.DVDProfiler.DVDProfilerXML;
 using System.Globalization;
+using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows.Forms;
 using DoenaSoft.DVDProfiler.DVDProfilerHelper;
+using DoenaSoft.DVDProfiler.DVDProfilerXML;
+using DoenaSoft.ToolBox.Generics;
+using Invelos.DVDProfilerPlugin;
 
 namespace DoenaSoft.DVDProfiler.FindDoubleDips
 {
@@ -31,62 +31,67 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
 
         private CultureInfo PreviousCultureInfo;
 
+        static Plugin()
+        {
+            DVDProfilerXMLAssemblyLoader.Load();
+        }
+
         public Plugin()
         {
-            this.ApplicationPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Doena Soft\Find Double Dips\";
-            this.SettingsFile = this.ApplicationPath + "FindDoubleDipsSettings.xml";
-            this.ErrorFile = Environment.GetEnvironmentVariable("TEMP") + @"\FindDoubleDipsCrash.xml";
+            ApplicationPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Doena Soft\Find Double Dips\";
+            SettingsFile = ApplicationPath + "FindDoubleDipsSettings.xml";
+            ErrorFile = Environment.GetEnvironmentVariable("TEMP") + @"\FindDoubleDipsCrash.xml";
         }
 
         #region IDVDProfilerPlugin Members
         public void Load(IDVDProfilerAPI api)
         {
-            this.Api = api;
-            if(Directory.Exists(this.ApplicationPath) == false)
+            Api = api;
+            if (Directory.Exists(ApplicationPath) == false)
             {
-                Directory.CreateDirectory(this.ApplicationPath);
+                Directory.CreateDirectory(ApplicationPath);
             }
-            if(File.Exists(this.SettingsFile))
+            if (File.Exists(SettingsFile))
             {
                 try
                 {
-                    Settings = Settings.Deserialize(this.SettingsFile);
+                    Settings = Settings.Deserialize(SettingsFile);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    MessageBox.Show(String.Format(MessageBoxTexts.FileCantBeRead, this.SettingsFile, ex.Message)
+                    MessageBox.Show(String.Format(MessageBoxTexts.FileCantBeRead, SettingsFile, ex.Message)
                         , MessageBoxTexts.ErrorHeader, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             CreateSettings();
-            if(Settings.DefaultValues.UiCulture != 0)
+            if (Settings.DefaultValues.UiCulture != 0)
             {
-                this.PreviousCultureInfo = Thread.CurrentThread.CurrentUICulture;
+                PreviousCultureInfo = Thread.CurrentThread.CurrentUICulture;
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(Settings.DefaultValues.UiCulture);
             }
-            MenuTokenISCP = this.Api.RegisterMenuItem(PluginConstants.FORMID_Main, PluginConstants.MENUID_Form
+            MenuTokenISCP = Api.RegisterMenuItem(PluginConstants.FORMID_Main, PluginConstants.MENUID_Form
                 , "Collection", Texts.PluginName, MenuId);
-            Thread.CurrentThread.CurrentUICulture = this.PreviousCultureInfo;
+            Thread.CurrentThread.CurrentUICulture = PreviousCultureInfo;
         }
 
         public void Unload()
         {
-            this.Api.UnregisterMenuItem(MenuTokenISCP);
+            Api.UnregisterMenuItem(MenuTokenISCP);
             try
             {
-                Settings.Serialize(this.SettingsFile);
+                Settings.Serialize(SettingsFile);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(String.Format(MessageBoxTexts.FileCantBeWritten, this.SettingsFile, ex.Message)
+                MessageBox.Show(String.Format(MessageBoxTexts.FileCantBeWritten, SettingsFile, ex.Message)
                     , MessageBoxTexts.ErrorHeader, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            this.Api = null;
+            Api = null;
         }
 
         public void HandleEvent(Int32 EventType, Object EventData)
         {
-            if(EventType == PluginConstants.EVENTID_CustomMenuClick)
+            if (EventType == PluginConstants.EVENTID_CustomMenuClick)
             {
                 this.HandleMenuClick((Int32)EventData);
             }
@@ -150,56 +155,56 @@ namespace DoenaSoft.DVDProfiler.FindDoubleDips
 
         private void HandleMenuClick(Int32 MenuEventID)
         {
-            if(MenuEventID == MenuId)
+            if (MenuEventID == MenuId)
             {
-                this.PreviousCultureInfo = Thread.CurrentThread.CurrentUICulture;
-                if(Settings.DefaultValues.UiCulture != 0)
+                PreviousCultureInfo = Thread.CurrentThread.CurrentUICulture;
+                if (Settings.DefaultValues.UiCulture != 0)
                 {
                     Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(Settings.DefaultValues.UiCulture);
                 }
                 try
                 {
-                    using(MainForm mainForm = new MainForm(this.Api))
+                    using (MainForm mainForm = new MainForm(Api))
                     {
                         mainForm.ShowDialog();
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     try
                     {
                         ExceptionXml exceptionXml;
 
-                        MessageBox.Show(String.Format(MessageBoxTexts.CriticalError, ex.Message, this.ErrorFile)
+                        MessageBox.Show(String.Format(MessageBoxTexts.CriticalError, ex.Message, ErrorFile)
                             , MessageBoxTexts.CriticalErrorHeader, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                        if(File.Exists(this.ErrorFile))
+                        if (File.Exists(ErrorFile))
                         {
                             File.Delete(ErrorFile);
                         }
                         exceptionXml = new ExceptionXml(ex);
-                        DVDProfilerSerializer<ExceptionXml>.Serialize(ErrorFile, exceptionXml);
+                        XmlSerializer<ExceptionXml>.Serialize(ErrorFile, exceptionXml);
                     }
-                    catch(Exception inEx)
+                    catch (Exception inEx)
                     {
-                        MessageBox.Show(String.Format(MessageBoxTexts.FileCantBeWritten, this.ErrorFile, inEx.Message), MessageBoxTexts.ErrorHeader
+                        MessageBox.Show(String.Format(MessageBoxTexts.FileCantBeWritten, ErrorFile, inEx.Message), MessageBoxTexts.ErrorHeader
                             , MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-                Thread.CurrentThread.CurrentUICulture = this.PreviousCultureInfo;
+                Thread.CurrentThread.CurrentUICulture = PreviousCultureInfo;
             }
         }
 
         private static void CreateSettings()
         {
-            if(Settings == null)
+            if (Settings == null)
             {
                 Settings = new Settings();
             }
-            if(Settings.MainForm == null)
+            if (Settings.MainForm == null)
             {
                 Settings.MainForm = new SizableForm();
             }
-            if(Settings.DefaultValues == null)
+            if (Settings.DefaultValues == null)
             {
                 Settings.DefaultValues = new DefaultValues();
             }

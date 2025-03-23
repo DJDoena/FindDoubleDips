@@ -1,8 +1,8 @@
 [Setup]
 AppName=Find Double Dips
 AppId=FindDoubleDips
-AppVerName=Find Double Dips 3.0.2.4
-AppCopyright=Copyright © Doena Soft. 2012 - 2022
+AppVerName=Find Double Dips 3.0.3
+AppCopyright=Copyright © Doena Soft. 2012 - 2025
 AppPublisher=Doena Soft.
 AppPublisherURL=http://doena-journal.net/en/dvd-profiler-tools/
 DefaultDirName={commonpf32}\Doena Soft.\Find Double Dips
@@ -12,16 +12,16 @@ SourceDir=..\FindDoubleDips\bin\x86\FindDoubleDips
 Compression=zip/9
 AppMutex=InvelosDVDPro
 OutputBaseFilename=FindDoubleDipsSetup
-OutputDir=..\..\..\..\FindDoubleDipsSetup\Setup\FindDoubleDips
+OutputDir=..\..\..\..\..\FindDoubleDipsSetup\Setup\FindDoubleDips
 MinVersion=0,6.1sp1
 PrivilegesRequired=admin
 WizardStyle=modern
 DisableReadyPage=yes
 ShowLanguageDialog=no
 VersionInfoCompany=Doena Soft.
-VersionInfoCopyright=2012 - 2022
+VersionInfoCopyright=2012 - 2025
 VersionInfoDescription=Find Double Dips Setup
-VersionInfoVersion=3.0.2.4
+VersionInfoVersion=3.0.3
 UninstallDisplayIcon={app}\djdsoft.ico
 
 [Languages]
@@ -35,15 +35,11 @@ Name: "full"; Description: "Full installation"
 
 [Files]
 Source: "djdsoft.ico"; DestDir: "{app}"; Flags: ignoreversion
-Source: "DoenaSoft.DVDProfilerHelper.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "DoenaSoft.DVDProfilerXML.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "DoenaSoft.FindDoubleDips.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "DoenaSoft.FindDoubleDips.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "DoenaSoft.WindowsAPICodePack.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "DoenaSoft.WindowsAPICodePack.Shell.dll"; DestDir: "{app}"; Flags: ignoreversion
 
-Source: "de\DoenaSoft.DVDProfilerHelper.resources.dll"; DestDir: "{app}\de"; Flags: ignoreversion
-Source: "de\DoenaSoft.FindDoubleDips.resources.dll"; DestDir: "{app}\de"; Flags: ignoreversion
+Source: "*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "*.pdb"; DestDir: "{app}"; Flags: ignoreversion
+
+Source: "de\*.dll"; DestDir: "{app}\de"; Flags: ignoreversion
 
 Source: "Readme\readme.html"; DestDir: "{app}\Readme"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
